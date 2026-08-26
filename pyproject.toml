@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "synthstrip-torch"
+version = "0.1.0"
+description = "Lean standalone PyTorch inference for SynthStrip brain extraction (SDT). Derivative of FreeSurfer's mri_synthstrip; weights fetched from MGH at first use."
+readme = "README.md"
+# NOT a permissive OSI license: this redistributes FreeSurfer-derived code under the
+# FreeSurfer Software License Agreement (see LICENSE). Do not relicense.
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "medseg maintainers" }]
+keywords = ["synthstrip", "skull-strip", "brain-extraction", "neuroimaging", "pytorch"]
+dependencies = [
+    "torch>=2.7",
+    # surfa is SynthStrip's trained-input conform (1 mm / LIA). surfa's reorient
+    # breaks on numpy 2.x and surfa declares no cap, so pin numpy<2 here.
+    "numpy<2",
+    "surfa",
+    # surfa->geometry handoff (surfa writes the conformed grid, SimpleITK reads it)
+    # and SimpleITK-image inputs.
+    "SimpleITK>=2.3",
+]
+
+[project.urls]
+homepage = "https://synthstrip.io"
+upstream = "https://github.com/freesurfer/freesurfer/tree/dev/mri_synthstrip"
+
+[tool.setuptools.packages.find]
+where = ["src"]
