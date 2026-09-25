@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "synthstrip-torch"
-version = "0.1.0"
+version = "0.1.1"
 description = "Lean standalone PyTorch inference for SynthStrip brain extraction (SDT). Derivative of FreeSurfer's mri_synthstrip; weights fetched from MGH at first use."
 readme = "README.md"
 # NOT a permissive OSI license: this redistributes FreeSurfer-derived code under the
@@ -15,10 +15,13 @@ authors = [{ name = "medseg maintainers" }]
 keywords = ["synthstrip", "skull-strip", "brain-extraction", "neuroimaging", "pytorch"]
 dependencies = [
     "torch>=2.7",
-    # surfa is SynthStrip's trained-input conform (1 mm / LIA). surfa's reorient
-    # breaks on numpy 2.x and surfa declares no cap, so pin numpy<2 here.
-    "numpy<2",
-    "surfa",
+    # surfa is SynthStrip's trained-input conform (1 mm / LIA). Its last release (0.6.3,
+    # 2025-09) breaks in `reorient` on numpy 2 ("setting an array element with a sequence");
+    # upstream fixed it on 2026-03-02 (8aa4a5f6) and has not released since, so surfa is
+    # pinned to that commit. Measured 2026-09-25 on CPU: numpy 2.5.3 + this surfa gives the
+    # same distance field and mask bit for bit as numpy 1.26 + surfa 0.6.3.
+    "numpy",
+    "surfa @ git+https://github.com/freesurfer/surfa.git@8aa4a5f60708ea4294f9a8d5c4989168c247ac2a",
     # surfa->geometry handoff (surfa writes the conformed grid, SimpleITK reads it)
     # and SimpleITK-image inputs.
     "SimpleITK>=2.3",

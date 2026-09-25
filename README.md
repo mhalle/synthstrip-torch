@@ -1,5 +1,9 @@
 # synthstrip-torch
 
+> **Unsupported.** This package is kept runnable on current libraries (NumPy 2, recent
+> torch) for the tools that use it, and is otherwise not developed. For supported SynthStrip,
+> use FreeSurfer's own `mri_synthstrip`.
+
 A lean, standalone **PyTorch inference** package for [SynthStrip](https://synthstrip.io)
 brain extraction (skull-stripping). One small 3D UNet, one call:
 
@@ -27,8 +31,10 @@ the `path=` argument). They are not redistributed in this repo.
 pip install "synthstrip-torch @ git+https://github.com/mhalle/synthstrip-torch.git"
 ```
 
-Depends only on `torch`, `numpy<2` (surfa's reorient requires it), `surfa`, and
-`SimpleITK` — no FreeSurfer binaries, no monai/torchio.
+Depends only on `torch`, `numpy`, `surfa`, and `SimpleITK` — no FreeSurfer binaries, no
+monai/torchio. surfa is installed from a pinned upstream commit (`8aa4a5f6`), the NumPy 2 fix
+its last release (0.6.3) predates; surfa ships only a source distribution, so installing it
+needs a C compiler.
 
 ## API
 
